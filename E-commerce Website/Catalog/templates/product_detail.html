@@ -1,0 +1,75 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<div class="product-detail-wrapper">
+  <div class="product-detail">
+    {% if product.main_image %}
+    <div class="product-detail-image">
+      <img src="{{ product.main_image.url }}">
+    </div>
+    {% else %}
+    <div class="product-detail-image">
+      <img src="/static/src/none-img.png">
+    </div>
+    {% endif %}
+    <div class="product-detail-info">
+      <div class="product-detail-main-info">
+        {% if product.plant_name %}
+          <div class="product-detail-plant-name">
+            {{ product.plant_name }}
+          </div>
+        {% endif %}
+        <div class="product-detail-product-name">
+          {{ product.name }}
+        </div>
+        <div class="product-detail-price">
+          {{ product.price }} Руб.
+        </div>
+      </div>
+      <div class="product-description">
+        {{ product.description }}
+      </div>
+      <form action="{% url 'Cart:cart_add' product.id %}" method="post" id="add-to-cart-form">
+        {% csrf_token %}
+        <button type="submit" class="form-btn">Добавить в корзину</button>
+        <div class="response" id="message">
+
+        </div>
+        <div class="response">
+
+        </div>
+      </form>
+  </div>
+    </div>
+</div>
+
+<script>
+  document.getElementById('add-to-cart-form').addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const form = event.target;
+    const url = form.action;
+    const formData = new FormData(form);
+
+    fetch(url, {
+    method: 'POST',
+    headers:{
+      'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+    },
+    body: formData
+  })
+  .then(response => response.json())
+  .then(data => {
+    const messageElement = document.getElementById('message');
+    if (data.success) {
+      messageElement.textContent = data.message;
+    } else {
+      messageElement.textContent = 'Не удалось добавить в корзину';
+    }
+  })
+    .catch(error => {
+      console.error("Error", error);
+  })
+})
+</script>
+{% endblock %}

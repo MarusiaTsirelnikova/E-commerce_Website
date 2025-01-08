@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>BeeLoved Plants</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/normilize.css">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header>
+    <div class="header-wrapper">
+      <div class="header-logo">
+        <img src="/static/src/bee-logo.png">
+        BeeLoved Plants
+      </div>
+      <div class="header-menu-center">
+        <a href="/">Главная</a>
+        <a href="/catalog/">Каталог</a>
+        <a href="/contacts">Контакты</a>
+      </div>
+      <div class="header-menu-right">
+        <a href="{% url 'Cart:cart_detail' %}">
+            <img src="/static/src/cart-img.png">
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <div class="wrapper">
+      <div class="content-wrapper">
+        {% block content %}
+        {% endblock %}
+      </div>
+  </div>
+
+  <footer>
+    <div class="footer-wrapper">
+      <div class="footer-logo">
+        <img src="/static/src/bee-logo-footer.png">
+        BeeLoved Plants
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,60 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<div class="cart-wrapper">
+
+    {% if cart %}
+
+        <ul class="cart">
+            {% for item in cart.items.all %}
+                <li>
+                    <a href="{% url 'Catalog:product_detail' item.product.slug %}">
+                        <div class="wrapper-element-in-cart">
+                            <div class="catalog-card-info">
+                                <div class="catalog-card-name">{{ item.product.name }}</div>
+                                <div class="catalog-card-sub-name">{{ item.product.price }} Руб. / 1 шт.</div>
+                                <div class="catalog-card-price">{{ item.get_total_price }} Руб.</div>
+                            </div>
+                        </div>
+                    </a>
+                    <div class="quantity">
+                        <form action="{% url 'Cart:cart_delete' item.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="form-btn-quantity">-</button>
+                        </form>
+                        {{ item.quantity }}
+                        <form action="{% url 'Cart:cart_append' item.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit"class="form-btn-quantity">+</button>
+                        </form>
+                    </div>
+                    <div class="remove-button">
+                        <form action="{% url 'Cart:remove' item.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="form-btn">Удалить из корзины</button>
+                        </form>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+
+    <div class="total">
+        Сумма заказа: {{ cart.get_total_price }} Руб.
+    </div>
+
+    <form action="{% url 'Orders:order_create' %}" method="post">
+        {% csrf_token %}
+        <button type="submit" class="form-btn">Оформить заказ</button>
+    </form>
+
+    {% else %}
+
+    <div>
+        Empty!
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+<div class="confirmation-wrapper">
+    <div class="confirmation-info">
+        Заказ №{{ order.id }} на сумму {{ order.get_total_cost }} Руб. был успешно создан!
+    </div>
+    <div class="confirmation-sub-info">
+        Скоро Вы получите от нас письмо с реквизитами для оплаты заказа. Заказ будет отправлен сразу после оплаты :)
+    </div>
+</div>
+
+{% endblock %}

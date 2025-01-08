@@ -1,0 +1,88 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<div class="catalog-wrapper">
+    <div class="catalog-aside">
+        <div class="catalog-title">
+            КАТАЛОГ
+            {% if category %}
+                <div class="catalog-category-name">
+                    {{ category }}
+                </div>
+            {% endif %}
+        </div>
+        <div class="catalog-filters">
+            <div class="category">
+                {% for category in categories %}
+                    <li>
+                        <a href="{% url 'Catalog:product_list_by_category' category.slug %}">{{ category.name }}</a>
+                    </li>
+                    {% if category.name == 'Растения' %}
+                        <div class="catalog-plant-categories">
+                            {% for plant_category in plant_categories %}
+                                <li>
+                                    <a href="{% url 'Catalog:product_list_by_category_and_type' category.slug plant_category.slug %}">{{ plant_category.name }}</a>
+                                </li>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="catalog-content">
+        <div class="catalog-cards">
+            {% if products %}
+                {% for element in products %}
+                    {% if forloop.counter0|divisibleby:"5" %}
+                        <a href="{% url 'Catalog:product_detail' element.slug %}">
+                            <div class="catalog-card catalog-card-large">
+                                {% if element.main_image %}
+                                    <img class="catalog-card-image-large" src="{{ element.main_image.url }}">
+                                {% else %}
+                                    <img class="catalog-card-image-large" src="/static/src/none-img.png">
+                                {% endif %}
+                                <div class="catalog-card-info">
+                                    {% if element.plant_name %}
+                                        <div class="catalog-card-name">{{ element.plant_name }}</div>
+                                    {% endif %}
+                                    <div class="catalog-card-sub-name">{{ element.name }}</div>
+                                    <div class="catalog-card-price">{{ element.price }} Руб.</div>
+                                </div>
+                            </div>
+                        </a>
+                        {% if not forloop.first and forloop.counter0|divisibleby:"6" %}
+                            </div>
+                        {% endif %}
+                        {% if forloop.counter0|divisibleby:"5" %}
+                            <div class="small-columns-container">
+                        {% endif %}
+                    {% else %}
+                            <a href="{% url 'Catalog:product_detail' element.slug %}">
+                                <div class="catalog-card catalog-card-small">
+                                    {% if element.main_image %}
+                                        <img class="catalog-card-image-small" src="{{ element.main_image.url }}">
+                                    {% else %}
+                                        <img class="catalog-card-image-small" src="/static/src/none-img-small.png">
+                                    {% endif %}
+                                <div class="catalog-card-info">
+                                    <div class="catalog-card-name">{{ element.plant_name }}</div>
+                                    <div class="catalog-card-sub-name">{{ element.name }}</div>
+                                    <div class="catalog-card-price">{{ element.price }} Руб.</div>
+                                </div>
+                                </div>
+                            </a>
+                        {% if forloop.last or forloop.counter0|add:"1"|divisibleby:"5" %}
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <div class="catalog-empty">
+                    Товары данной категории скоро станут доступны к продаже!
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+<div class="create-wrapper">
+    <div class="create-info">
+        Ваш заказ уже готовится к встрече с Вами! Осталось совсем немного!
+    </div>
+  <form action="" method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="form-btn">Заказать</button>
+  </form>
+</div>
+
+{% endblock %}
